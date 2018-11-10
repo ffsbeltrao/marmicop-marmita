@@ -1,11 +1,13 @@
 package io.iwsbrazil.marmicop_marmita
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.firestore.*
 import io.iwsbrazil.marmicop_marmita.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this)[MainViewModel::class.java]
     }
+
+    private val marmita = FirebaseFirestore.getInstance().collection("marmitas").document("the_marmita")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +28,21 @@ class MainActivity : AppCompatActivity() {
             .setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel
+
+        marmita.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
+            if (e != null) {
+                return@EventListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val marmita = snapshot.toObject(Marmita::class.java)
+                if (marmita?.armada != false) {
+                    armar()
+                } else {
+                    desarmar()
+                }
+            }
+        })
     }
 
     override fun onStart() {
@@ -39,6 +58,14 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 //        Nearby.getMessagesClient(this).unsubscribe(messageListener)
+    }
+
+    private fun armar() {
+        Log.i("Info", "Armado!")
+    }
+
+    private fun desarmar() {
+        Log.i("Info", "Desarmado!")
     }
 
 //    private val messageListener = object : MessageListener() {
