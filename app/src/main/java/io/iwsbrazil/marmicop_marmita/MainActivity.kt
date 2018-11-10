@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this)[MainViewModel::class.java]
     }
 
-    private val marmitaReference = FirebaseFirestore.getInstance().collection("marmitas").document("the_marmita")
+    private val marmitaReference = FirebaseFirestore.getInstance().collection("marmitas").document("marmita_dev")
     private val gemedor = Gemedor(this)
     private var marmita = Marmita()
 
@@ -39,14 +39,19 @@ class MainActivity : AppCompatActivity() {
 
             if (snapshot != null && snapshot.exists()) {
                 marmita = snapshot.toObject(Marmita::class.java) ?: return@EventListener
+                if (!marmita.armada) {
+                    gemedor.parar()
+                }
+
+                if (marmita.armada) {
+                    gemedor.gemer(marmita.gemido)
+                }
             }
         })
     }
 
     override fun onStart() {
         super.onStart()
-
-        gemedor.gemer( "zap")
 //        val subscribeOptions = SubscribeOptions.Builder()
 //            .setStrategy(Strategy.BLE_ONLY)
 //            .build()
@@ -56,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        gemedor.parar()
 //        Nearby.getMessagesClient(this).unsubscribe(messageListener)
     }
 
