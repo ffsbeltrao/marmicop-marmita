@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "524390044811",
+    "firebase_url": "https://marmicop-85f9e.firebaseio.com",
+    "project_id": "marmicop-85f9e",
+    "storage_bucket": "marmicop-85f9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524390044811:android:a8d882388650b2bf",
+        "android_client_info": {
+          "package_name": "io.iwsbrazil.marmicop_marmita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524390044811-eltg4cua5m8rqer077rbe0ul7moio1d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJDsPaN9UUoiMsTZT93rFd13niopYH4pU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
