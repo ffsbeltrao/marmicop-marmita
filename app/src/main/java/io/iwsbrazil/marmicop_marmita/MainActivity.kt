@@ -35,12 +35,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (snapshot != null && snapshot.exists()) {
-                val marmita = snapshot.toObject(Marmita::class.java)
-                if (marmita?.armada != false) {
-                    armar()
-                } else {
-                    desarmar()
-                }
+                val marmita = snapshot.toObject(Marmita::class.java) ?: return@EventListener
+                if (marmita.armada) armar() else desarmar()
             }
         })
     }
