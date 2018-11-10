@@ -1,13 +1,14 @@
 package io.iwsbrazil.marmicop_marmita
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import io.iwsbrazil.marmicop_marmita.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val marmitaReference = FirebaseFirestore.getInstance().collection("marmitas").document("the_marmita")
+    private val gemedor = Gemedor(this)
     private var marmita = Marmita()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        gemedor.gemer( "zap")
 //        val subscribeOptions = SubscribeOptions.Builder()
 //            .setStrategy(Strategy.BLE_ONLY)
 //            .build()
