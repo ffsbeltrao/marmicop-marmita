@@ -7,7 +7,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import io.iwsbrazil.marmicop_marmita.model.data.Marmita
 
-class MarmitaRepository(firestore: FirebaseFirestore) {
+class MarmitaRepository(private val firestore: FirebaseFirestore) {
 
     val marmita: LiveData<Marmita> = MutableLiveData<Marmita>().apply {
         firestore.collection("marmitas").document("marmita_dev")
@@ -21,6 +21,11 @@ class MarmitaRepository(firestore: FirebaseFirestore) {
                     postValue(marmita)
                 }
             })
+    }
+
+    fun setGemendo(gemendo: Boolean) {
+        firestore.collection("marmitas").document("marmita_dev")
+            .update("gemendo", gemendo)
     }
 
 }

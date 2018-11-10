@@ -9,6 +9,8 @@ import io.iwsbrazil.marmicop_marmita.model.MovementRepository
 class MainViewModel(movementRepository: MovementRepository, marmitaRepository: MarmitaRepository) :
     ViewModel() {
 
+    private var gemendo = false
+
     private val isMoving = movementRepository.getMovement().map { movement ->
         movement?.let { Math.abs(it.x) > 0.1 || Math.abs(it.y) > 0.15 }
     }
@@ -18,12 +20,16 @@ class MainViewModel(movementRepository: MovementRepository, marmitaRepository: M
     }
 
     val robbed = marmitaRepository.marmita.combineWith(isMoving) { marmita, moving ->
-        if (moving == true && marmita?.armada == true) {
+        val response = if (moving == true && marmita?.armada == true && !gemendo) {
+            gemendo = true
             marmita.gemido
         } else if (marmita?.armada == false) {
+            gemendo = false
             null
         } else {
             "none"
         }
+        marmitaRepository.setGemendo(gemendo)
+        return@combineWith response
     }
 }
