@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this)[MainViewModel::class.java]
     }
 
-    private val marmita = FirebaseFirestore.getInstance().collection("marmitas").document("the_marmita")
+    private val marmitaReference = FirebaseFirestore.getInstance().collection("marmitas").document("the_marmita")
+    private var marmita = Marmita()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +30,13 @@ class MainActivity : AppCompatActivity() {
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel
 
-        marmita.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
+        marmitaReference.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
             if (e != null) {
                 return@EventListener
             }
 
             if (snapshot != null && snapshot.exists()) {
-                val marmita = snapshot.toObject(Marmita::class.java) ?: return@EventListener
-                if (marmita.armada) armar() else desarmar()
+                marmita = snapshot.toObject(Marmita::class.java) ?: return@EventListener
             }
         })
     }
@@ -54,14 +54,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 //        Nearby.getMessagesClient(this).unsubscribe(messageListener)
-    }
-
-    private fun armar() {
-        Log.i("Info", "Armado!")
-    }
-
-    private fun desarmar() {
-        Log.i("Info", "Desarmado!")
     }
 
 //    private val messageListener = object : MessageListener() {
