@@ -9,8 +9,11 @@ import io.iwsbrazil.marmicop_marmita.model.data.Marmita
 
 class MarmitaRepository(private val firestore: FirebaseFirestore) {
 
+    val marmitaCollection = "marmitas"
+    val marmitaId = "marmita_dev"
+
     val marmita: LiveData<Marmita> = MutableLiveData<Marmita>().apply {
-        firestore.collection("marmitas").document("marmita_dev")
+        firestore.collection(marmitaCollection).document(marmitaId)
             .addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
                 if (e != null) {
                     return@EventListener
@@ -24,8 +27,7 @@ class MarmitaRepository(private val firestore: FirebaseFirestore) {
     }
 
     fun setGemendo(gemendo: Boolean) {
-        firestore.collection("marmitas").document("marmita_dev")
+        firestore.collection(marmitaCollection).document(marmitaId)
             .update("gemendo", gemendo)
     }
-
 }
