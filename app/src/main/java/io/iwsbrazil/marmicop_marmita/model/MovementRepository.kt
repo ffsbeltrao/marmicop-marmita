@@ -9,17 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 class MovementRepository(private val context: Context) {
-
-    companion object {
-        private const val DELAY_SECONDS = 1L
-    }
-
     fun getMovement(): LiveData<Movement> {
         val liveData = MutableLiveData<Movement>()
 
         val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
-
 
         val accs = floatArrayOf(0f, 0f, 0f)
         var samplings = 0
@@ -49,7 +43,7 @@ class MovementRepository(private val context: Context) {
 
                 val time = timeDifference / 1000000000f
 
-                if (time < 3) return
+                if (time < 0.8) return
 
                 val avgAccs = accs.map {
                     it / samplings
@@ -68,9 +62,6 @@ class MovementRepository(private val context: Context) {
         sensorManager.registerListener(eventListener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         return liveData
     }
-
-    private fun getDisplacement(acceleration: Float, time: Float) =
-        (0.5 * acceleration * Math.pow(time.toDouble(), 2.0)).toFloat()
 
     data class Movement(val x: Float, val y: Float, val z: Float)
 }

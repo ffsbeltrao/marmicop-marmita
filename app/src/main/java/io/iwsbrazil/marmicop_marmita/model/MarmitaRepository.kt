@@ -10,7 +10,7 @@ import io.iwsbrazil.marmicop_marmita.model.data.Marmita
 class MarmitaRepository(private val firestore: FirebaseFirestore) {
 
     val marmitaCollection = "marmitas"
-    val marmitaId = "marmita_dev"
+    val marmitaId = "the_marmita"
 
     val marmita: LiveData<Marmita> = MutableLiveData<Marmita>().apply {
         firestore.collection(marmitaCollection).document(marmitaId)
